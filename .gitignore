@@ -1,9 +1,7 @@
 # Data directories to ignore
 nfl_data/
-images/
 pass_data/
 rush_data/
-train_data/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
