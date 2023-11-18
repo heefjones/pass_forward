@@ -1,0 +1,308 @@
+,rmse,r2,model,feats,pca,poly
+0,12.682781967933526,0.2650015426608959,LinearRegression(),all_feats,False,False
+1,12.56599468983688,0.281928734058174,LinearRegression(),percent_features,False,False
+2,12.37333737710454,0.3007118570701023,LinearRegression(),high_corrs,False,False
+3,12.57114807179595,0.2818577429387658,LinearRegression(),grades_only,False,False
+4,12.550732952852798,0.2840424824120326,LinearRegression(),grades_offense,False,False
+5,12.571148071795948,0.2818577429387658,LinearRegression(),tds,False,False
+6,12.54361988941468,0.2849943254299193,LinearRegression(),intuition,False,False
+7,12.520993147352394,0.2828859691032243,LinearRegression(),all_feats,True,False
+8,12.547280169567006,0.28414999668856294,LinearRegression(),percent_features,True,False
+9,12.372120403321919,0.30184399407702467,LinearRegression(),high_corrs,True,False
+10,12.558688083537156,0.2831656253971299,LinearRegression(),grades_only,True,False
+11,12.550732952852798,0.28404248241203267,LinearRegression(),grades_offense,True,False
+12,12.558770198408554,0.2831570438979426,LinearRegression(),tds,True,False
+13,12.54361988941468,0.2849943254299193,LinearRegression(),intuition,True,False
+14,65.29259753645101,-23.13747912269771,LinearRegression(),all_feats,False,True
+15,26.840362959914057,-2.466383981575896,LinearRegression(),percent_features,False,True
+16,118.05307395658352,-170.32468254149956,LinearRegression(),high_corrs,False,True
+17,12.401260203727626,0.30039340650676893,LinearRegression(),grades_only,False,True
+18,12.55123971694883,0.28312866346615556,LinearRegression(),grades_offense,False,True
+19,12.401260203727626,0.30039340650676893,LinearRegression(),tds,False,True
+20,13.605649148581614,0.15852197145216124,LinearRegression(),intuition,False,True
+21,65.29259753645101,-23.13747912269771,LinearRegression(),all_feats,True,True
+22,26.840362959914057,-2.466383981575896,LinearRegression(),percent_features,True,True
+23,118.05307395658352,-170.32468254149956,LinearRegression(),high_corrs,True,True
+24,12.401260203727626,0.30039340650676893,LinearRegression(),grades_only,True,True
+25,12.55123971694883,0.28312866346615556,LinearRegression(),grades_offense,True,True
+26,12.401260203727626,0.30039340650676893,LinearRegression(),tds,True,True
+27,13.605649148581614,0.15852197145216124,LinearRegression(),intuition,True,True
+28,13.368507054950461,0.18608198031426204,KNeighborsRegressor(),all_feats,False,False
+29,13.485001273922938,0.17408457525324605,KNeighborsRegressor(),percent_features,False,False
+30,13.10171801514301,0.21709478286983916,KNeighborsRegressor(),high_corrs,False,False
+31,13.350546197265377,0.18633987443920103,KNeighborsRegressor(),grades_only,False,False
+32,13.492852470014038,0.17066410163827075,KNeighborsRegressor(),grades_offense,False,False
+33,13.326081308232256,0.1898519821707732,KNeighborsRegressor(),tds,False,False
+34,13.323087399119643,0.19345879257961077,KNeighborsRegressor(),intuition,False,False
+35,13.350390601112409,0.18801816620257045,KNeighborsRegressor(),all_feats,True,False
+36,13.499740597551929,0.17243323969702876,KNeighborsRegressor(),percent_features,True,False
+37,13.021263841855069,0.22655951865763768,KNeighborsRegressor(),high_corrs,True,False
+38,13.358054168849188,0.1853349069439328,KNeighborsRegressor(),grades_only,True,False
+39,13.492852470014038,0.17066410163827075,KNeighborsRegressor(),grades_offense,True,False
+40,13.284728546980864,0.19473208221343813,KNeighborsRegressor(),tds,True,False
+41,13.323087399119643,0.19345879257961077,KNeighborsRegressor(),intuition,True,False
+42,13.588092993966109,0.16028360360168467,KNeighborsRegressor(),all_feats,False,True
+43,13.628635090944494,0.15773983135678155,KNeighborsRegressor(),percent_features,False,True
+44,13.181614683643224,0.20666841305005476,KNeighborsRegressor(),high_corrs,False,True
+45,13.332376440559822,0.19034903318281088,KNeighborsRegressor(),grades_only,False,True
+46,13.353852889958683,0.18865481620968802,KNeighborsRegressor(),grades_offense,False,True
+47,13.332633000387455,0.19071930167935486,KNeighborsRegressor(),tds,False,True
+48,13.478903074374056,0.1744581896126928,KNeighborsRegressor(),intuition,False,True
+49,13.588092993966109,0.16028360360168467,KNeighborsRegressor(),all_feats,True,True
+50,13.628635090944494,0.15773983135678155,KNeighborsRegressor(),percent_features,True,True
+51,13.181614683643224,0.20666841305005476,KNeighborsRegressor(),high_corrs,True,True
+52,13.332376440559822,0.19034903318281088,KNeighborsRegressor(),grades_only,True,True
+53,13.353852889958683,0.18865481620968802,KNeighborsRegressor(),grades_offense,True,True
+54,13.332633000387455,0.19071930167935486,KNeighborsRegressor(),tds,True,True
+55,13.478903074374056,0.1744581896126928,KNeighborsRegressor(),intuition,True,True
+56,14.704258447104749,0.014913419627838143,KNeighborsRegressor(n_neighbors=2),high_corrs,False,False
+57,13.376053429429366,0.18458331047640614,KNeighborsRegressor(n_neighbors=4),high_corrs,False,False
+58,12.943809025906173,0.23499497007613446,KNeighborsRegressor(n_neighbors=6),high_corrs,False,False
+59,12.79809355275852,0.2525092814498341,KNeighborsRegressor(n_neighbors=8),high_corrs,False,False
+60,12.702680554771963,0.26386053464732184,KNeighborsRegressor(n_neighbors=10),high_corrs,False,False
+61,12.550009235029124,0.28232639296056206,KNeighborsRegressor(n_neighbors=12),high_corrs,False,False
+62,12.512985303046435,0.28716319488122866,KNeighborsRegressor(n_neighbors=14),high_corrs,False,False
+63,12.459177529289429,0.2935976292825308,KNeighborsRegressor(n_neighbors=16),high_corrs,False,False
+64,12.478175475869131,0.29148087830853553,KNeighborsRegressor(n_neighbors=18),high_corrs,False,False
+65,12.460404168547859,0.2937622857226362,KNeighborsRegressor(n_neighbors=20),high_corrs,False,False
+66,12.466137801657386,0.2932958265586878,KNeighborsRegressor(n_neighbors=22),high_corrs,False,False
+67,12.423919116252218,0.2979904585221525,KNeighborsRegressor(n_neighbors=24),high_corrs,False,False
+68,12.400003823373407,0.3005151042121663,KNeighborsRegressor(n_neighbors=26),high_corrs,False,False
+69,12.375406064233179,0.30304573041299304,KNeighborsRegressor(n_neighbors=28),high_corrs,False,False
+70,12.358010636293663,0.3048675648766316,KNeighborsRegressor(n_neighbors=30),high_corrs,False,False
+71,12.36930747370246,0.30375381420376896,KNeighborsRegressor(n_neighbors=32),high_corrs,False,False
+72,12.36772250880281,0.30404873577198427,KNeighborsRegressor(n_neighbors=34),high_corrs,False,False
+73,12.360417084881817,0.3047750481173644,KNeighborsRegressor(n_neighbors=36),high_corrs,False,False
+74,12.34253898880841,0.3068169631489498,KNeighborsRegressor(n_neighbors=38),high_corrs,False,False
+75,12.319620414113661,0.30933671069925034,KNeighborsRegressor(n_neighbors=40),high_corrs,False,False
+76,12.306546620031831,0.3106911251493544,KNeighborsRegressor(n_neighbors=42),high_corrs,False,False
+77,12.316231995894224,0.30968504148251813,KNeighborsRegressor(n_neighbors=44),high_corrs,False,False
+78,12.27934981781151,0.3138519977244065,KNeighborsRegressor(n_neighbors=46),high_corrs,False,False
+79,12.28572276298033,0.3130017190513209,KNeighborsRegressor(n_neighbors=48),high_corrs,False,False
+80,12.290586981730831,0.31255900366501016,KNeighborsRegressor(n_neighbors=50),high_corrs,False,False
+81,12.292385445925202,0.3122425452249485,KNeighborsRegressor(n_neighbors=52),high_corrs,False,False
+82,12.308322587767666,0.31028100819541493,KNeighborsRegressor(n_neighbors=54),high_corrs,False,False
+83,12.29357735599704,0.3120940522840403,KNeighborsRegressor(n_neighbors=56),high_corrs,False,False
+84,12.302658736101396,0.3110310986558974,KNeighborsRegressor(n_neighbors=58),high_corrs,False,False
+85,12.31584477085226,0.3095351116907302,KNeighborsRegressor(n_neighbors=60),high_corrs,False,False
+86,12.315221838634558,0.3094394309720469,KNeighborsRegressor(n_neighbors=62),high_corrs,False,False
+87,12.313969485626135,0.3095006147141043,KNeighborsRegressor(n_neighbors=64),high_corrs,False,False
+88,12.327801994152725,0.30781673176260815,KNeighborsRegressor(n_neighbors=66),high_corrs,False,False
+89,12.337006709561152,0.3067254924632552,KNeighborsRegressor(n_neighbors=68),high_corrs,False,False
+90,12.34106941125447,0.3063856514258771,KNeighborsRegressor(n_neighbors=70),high_corrs,False,False
+91,12.340285413371177,0.3064869391181121,KNeighborsRegressor(n_neighbors=72),high_corrs,False,False
+92,12.338922086512214,0.3066765633058363,KNeighborsRegressor(n_neighbors=74),high_corrs,False,False
+93,12.357687780569321,0.3047500551592551,KNeighborsRegressor(n_neighbors=76),high_corrs,False,False
+94,12.350903256463555,0.30553361039898547,KNeighborsRegressor(n_neighbors=78),high_corrs,False,False
+95,12.34949970454048,0.30584612845749204,KNeighborsRegressor(n_neighbors=80),high_corrs,False,False
+96,12.36051666447582,0.30470860378028597,KNeighborsRegressor(n_neighbors=82),high_corrs,False,False
+97,12.359393283839845,0.3047887780758322,KNeighborsRegressor(n_neighbors=84),high_corrs,False,False
+98,12.365545109730771,0.30411122895963255,KNeighborsRegressor(n_neighbors=86),high_corrs,False,False
+99,12.354175829086461,0.30548695461184766,KNeighborsRegressor(n_neighbors=88),high_corrs,False,False
+100,12.351133811214305,0.3058621549197147,KNeighborsRegressor(n_neighbors=90),high_corrs,False,False
+101,12.358781994315187,0.3049900654544531,KNeighborsRegressor(n_neighbors=92),high_corrs,False,False
+102,12.368114021892577,0.3039758921588308,KNeighborsRegressor(n_neighbors=94),high_corrs,False,False
+103,12.362640975728535,0.304582723559837,KNeighborsRegressor(n_neighbors=96),high_corrs,False,False
+104,12.365383916034428,0.30427776914116966,KNeighborsRegressor(n_neighbors=98),high_corrs,False,False
+105,12.374402108380334,0.30330920295410346,KNeighborsRegressor(n_neighbors=100),high_corrs,False,False
+106,17.32214481741571,-0.3695926041822223,DecisionTreeRegressor(random_state=9),all_feats,False,False
+107,17.73659931628488,-0.43026548213899335,DecisionTreeRegressor(random_state=9),percent_features,False,False
+108,17.221214897988247,-0.35466273360877365,DecisionTreeRegressor(random_state=9),high_corrs,False,False
+109,17.822181204131887,-0.4425303393871358,DecisionTreeRegressor(random_state=9),grades_only,False,False
+110,18.318993030496593,-0.5269320849613719,DecisionTreeRegressor(random_state=9),grades_offense,False,False
+111,17.897511155876707,-0.4584639223159117,DecisionTreeRegressor(random_state=9),tds,False,False
+112,17.29173864839769,-0.36442725282580796,DecisionTreeRegressor(random_state=9),intuition,False,False
+113,12.555195767568732,0.28326115405204344,"DecisionTreeRegressor(max_depth=2, random_state=9)",high_corrs,False,False
+114,12.71050767335678,0.26535610243552465,"DecisionTreeRegressor(max_depth=3, random_state=9)",high_corrs,False,False
+115,12.964633921655533,0.2354834842001953,"DecisionTreeRegressor(max_depth=4, random_state=9)",high_corrs,False,False
+116,13.384865090529479,0.18273669276110696,"DecisionTreeRegressor(max_depth=5, random_state=9)",high_corrs,False,False
+117,14.31772142601757,0.06246691618721141,"DecisionTreeRegressor(max_depth=6, random_state=9)",high_corrs,False,False
+118,14.563473892558894,0.03038841460275361,"DecisionTreeRegressor(max_depth=7, random_state=9)",high_corrs,False,False
+119,15.109969203131584,-0.04695913259967928,"DecisionTreeRegressor(max_depth=8, random_state=9)",high_corrs,False,False
+120,15.309377222039734,-0.07470801483707186,"DecisionTreeRegressor(max_depth=9, random_state=9)",high_corrs,False,False
+121,15.909709655314401,-0.1596075525862589,"DecisionTreeRegressor(max_depth=10, random_state=9)",high_corrs,False,False
+122,16.306996251490585,-0.21808845199749624,"DecisionTreeRegressor(max_depth=11, random_state=9)",high_corrs,False,False
+123,16.796567554791757,-0.28808661692223103,"DecisionTreeRegressor(max_depth=12, random_state=9)",high_corrs,False,False
+124,16.78188473092137,-0.28719030995229955,"DecisionTreeRegressor(max_depth=13, random_state=9)",high_corrs,False,False
+125,16.963664496830095,-0.3126419264886287,"DecisionTreeRegressor(max_depth=14, random_state=9)",high_corrs,False,False
+126,16.81353083956054,-0.28918886084925227,"DecisionTreeRegressor(max_depth=15, random_state=9)",high_corrs,False,False
+127,16.879221213395216,-0.2971107915266502,"DecisionTreeRegressor(max_depth=16, random_state=9)",high_corrs,False,False
+128,17.098949867267642,-0.3322283138866729,"DecisionTreeRegressor(max_depth=17, random_state=9)",high_corrs,False,False
+129,17.3123176734999,-0.36619491623772527,"DecisionTreeRegressor(max_depth=18, random_state=9)",high_corrs,False,False
+130,17.130991828503408,-0.3410192496911059,"DecisionTreeRegressor(max_depth=19, random_state=9)",high_corrs,False,False
+131,17.187426199474395,-0.35064210839044313,"DecisionTreeRegressor(max_depth=20, random_state=9)",high_corrs,False,False
+132,17.221214897988247,-0.35466273360877365,DecisionTreeRegressor(random_state=9),high_corrs,False,False
+133,15.977489142852729,-0.16575674560223427,"DecisionTreeRegressor(min_samples_split=12, random_state=9)",high_corrs,False,False
+134,14.760817832415821,0.00598591818875307,"DecisionTreeRegressor(min_samples_split=22, random_state=9)",high_corrs,False,False
+135,14.245830342715852,0.07487859805462564,"DecisionTreeRegressor(min_samples_split=32, random_state=9)",high_corrs,False,False
+136,14.054596885678293,0.1013961274238478,"DecisionTreeRegressor(min_samples_split=42, random_state=9)",high_corrs,False,False
+137,13.883142929041636,0.12386879175093002,"DecisionTreeRegressor(min_samples_split=52, random_state=9)",high_corrs,False,False
+138,13.797754330025544,0.13495889518456747,"DecisionTreeRegressor(min_samples_split=62, random_state=9)",high_corrs,False,False
+139,13.616830876789617,0.15684909491881743,"DecisionTreeRegressor(min_samples_split=72, random_state=9)",high_corrs,False,False
+140,13.371490463676599,0.18619500745393375,"DecisionTreeRegressor(min_samples_split=82, random_state=9)",high_corrs,False,False
+141,13.207675199126943,0.20596220094707202,"DecisionTreeRegressor(min_samples_split=92, random_state=9)",high_corrs,False,False
+142,13.009872372814513,0.22997621720812783,"DecisionTreeRegressor(min_samples_split=102, random_state=9)",high_corrs,False,False
+143,12.96500117733915,0.2354933860068585,"DecisionTreeRegressor(min_samples_split=112, random_state=9)",high_corrs,False,False
+144,12.929390190931802,0.23902272582371875,"DecisionTreeRegressor(min_samples_split=122, random_state=9)",high_corrs,False,False
+145,12.935543208175847,0.2383428451041938,"DecisionTreeRegressor(min_samples_split=132, random_state=9)",high_corrs,False,False
+146,12.909149540339476,0.2410623282128963,"DecisionTreeRegressor(min_samples_split=142, random_state=9)",high_corrs,False,False
+147,12.868850106884413,0.24589502529550403,"DecisionTreeRegressor(min_samples_split=152, random_state=9)",high_corrs,False,False
+148,12.852779368712419,0.2477115118379815,"DecisionTreeRegressor(min_samples_split=162, random_state=9)",high_corrs,False,False
+149,12.836824341093939,0.24937435109716383,"DecisionTreeRegressor(min_samples_split=172, random_state=9)",high_corrs,False,False
+150,12.841444105564108,0.24887558657375042,"DecisionTreeRegressor(min_samples_split=182, random_state=9)",high_corrs,False,False
+151,12.824223289484166,0.2510203567532036,"DecisionTreeRegressor(min_samples_split=192, random_state=9)",high_corrs,False,False
+152,12.76432085203249,0.2586363684834872,"DecisionTreeRegressor(min_samples_split=202, random_state=9)",high_corrs,False,False
+153,12.432258430439953,0.29591999539405867,RandomForestRegressor(random_state=9),all_feats,False,False
+154,12.439103316360747,0.29598096474934865,RandomForestRegressor(random_state=9),percent_features,False,False
+155,12.448024531983332,0.2950593232756812,RandomForestRegressor(random_state=9),high_corrs,False,False
+156,12.769711783200748,0.2585268734023087,RandomForestRegressor(random_state=9),grades_only,False,False
+157,13.000553356377557,0.23174917440385862,RandomForestRegressor(random_state=9),grades_offense,False,False
+158,12.782464819697871,0.25718968220215016,RandomForestRegressor(random_state=9),tds,False,False
+159,12.56663405732987,0.28124630115404986,RandomForestRegressor(random_state=9),intuition,False,False
+160,12.22768388485234,0.3195324610706951,"RandomForestRegressor(max_depth=2, random_state=9)",all_feats,False,False
+161,12.210362219460919,0.32098665336542664,"RandomForestRegressor(max_depth=3, random_state=9)",all_feats,False,False
+162,12.201623530074079,0.32189944989853314,"RandomForestRegressor(max_depth=4, random_state=9)",all_feats,False,False
+163,12.254269622180857,0.31617146153583786,"RandomForestRegressor(max_depth=5, random_state=9)",all_feats,False,False
+164,12.27176058782372,0.31420009535307447,"RandomForestRegressor(max_depth=6, random_state=9)",all_feats,False,False
+165,12.340145541177904,0.30640424325107535,"RandomForestRegressor(max_depth=7, random_state=9)",all_feats,False,False
+166,12.34285461589999,0.30620337620329763,"RandomForestRegressor(max_depth=8, random_state=9)",all_feats,False,False
+167,12.389611845207067,0.300888518581532,"RandomForestRegressor(max_depth=9, random_state=9)",all_feats,False,False
+168,12.386993140506197,0.30125547900888205,"RandomForestRegressor(max_depth=10, random_state=9)",all_feats,False,False
+169,12.432258430439953,0.29591999539405867,RandomForestRegressor(random_state=9),all_feats,False,False
+170,12.406584949234253,0.2989200747226251,"RandomForestRegressor(min_samples_split=12, random_state=9)",all_feats,False,False
+171,12.379507349411947,0.30207818203284276,"RandomForestRegressor(min_samples_split=22, random_state=9)",all_feats,False,False
+172,12.336624732411877,0.30715840611216444,"RandomForestRegressor(min_samples_split=32, random_state=9)",all_feats,False,False
+173,12.286119369260627,0.312695742635838,"RandomForestRegressor(min_samples_split=42, random_state=9)",all_feats,False,False
+174,12.25413673079586,0.31627228230786364,"RandomForestRegressor(min_samples_split=52, random_state=9)",all_feats,False,False
+175,12.21169598160879,0.3209409518137127,"RandomForestRegressor(min_samples_split=62, random_state=9)",all_feats,False,False
+176,12.20086770607221,0.3222334440042152,"RandomForestRegressor(min_samples_split=72, random_state=9)",all_feats,False,False
+177,12.196457707064074,0.3226305309465677,"RandomForestRegressor(min_samples_split=82, random_state=9)",all_feats,False,False
+178,12.185376623377223,0.3239462415602515,"RandomForestRegressor(min_samples_split=92, random_state=9)",all_feats,False,False
+179,12.178029816047507,0.32479165106854885,"RandomForestRegressor(min_samples_split=102, random_state=9)",all_feats,False,False
+180,12.167054225804725,0.3259990108728902,"RandomForestRegressor(min_samples_split=112, random_state=9)",all_feats,False,False
+181,12.170856056677419,0.32565902912202416,"RandomForestRegressor(min_samples_split=122, random_state=9)",all_feats,False,False
+182,12.177282111473858,0.32498980493771124,"RandomForestRegressor(min_samples_split=132, random_state=9)",all_feats,False,False
+183,12.180899099711956,0.32462954240003006,"RandomForestRegressor(min_samples_split=142, random_state=9)",all_feats,False,False
+184,12.194651372302324,0.3232066810754052,"RandomForestRegressor(min_samples_split=152, random_state=9)",all_feats,False,False
+185,12.212837899750657,0.3212116896207742,"RandomForestRegressor(min_samples_split=162, random_state=9)",all_feats,False,False
+186,12.226898063844109,0.31972612646055704,"RandomForestRegressor(min_samples_split=172, random_state=9)",all_feats,False,False
+187,12.272679203375159,0.3148599070294698,"RandomForestRegressor(min_samples_split=182, random_state=9)",all_feats,False,False
+188,12.35345703900818,0.3060918095824712,"RandomForestRegressor(min_samples_split=192, random_state=9)",all_feats,False,False
+189,12.458896560062104,0.2946317953779071,"RandomForestRegressor(min_samples_split=202, random_state=9)",all_feats,False,False
+190,12.789655324705588,0.25605551723433806,"XGBRegressor(base_score=None, booster=None, colsample_bylevel=None,
+             colsample_bynode=None, colsample_bytree=None, gamma=None,
+             gpu_id=None, importance_type='gain', interaction_constraints=None,
+             learning_rate=0.01, max_delta_step=None, max_depth=None,
+             min_child_weight=None, missing=nan, monotone_constraints=None,
+             n_estimators=1000, n_jobs=-1, num_parallel_tree=None,
+             random_state=9, reg_alpha=None, reg_lambda=None,
+             scale_pos_weight=None, subsample=None, tree_method=None,
+             validate_parameters=None, verbosity=None)",all_feats,False,False
+191,13.016938892382441,0.22965311441033154,"XGBRegressor(base_score=None, booster=None, colsample_bylevel=None,
+             colsample_bynode=None, colsample_bytree=None, gamma=None,
+             gpu_id=None, importance_type='gain', interaction_constraints=None,
+             learning_rate=0.01, max_delta_step=None, max_depth=None,
+             min_child_weight=None, missing=nan, monotone_constraints=None,
+             n_estimators=1000, n_jobs=-1, num_parallel_tree=None,
+             random_state=9, reg_alpha=None, reg_lambda=None,
+             scale_pos_weight=None, subsample=None, tree_method=None,
+             validate_parameters=None, verbosity=None)",percent_features,False,False
+192,13.106878822626394,0.21896303330812347,"XGBRegressor(base_score=None, booster=None, colsample_bylevel=None,
+             colsample_bynode=None, colsample_bytree=None, gamma=None,
+             gpu_id=None, importance_type='gain', interaction_constraints=None,
+             learning_rate=0.01, max_delta_step=None, max_depth=None,
+             min_child_weight=None, missing=nan, monotone_constraints=None,
+             n_estimators=1000, n_jobs=-1, num_parallel_tree=None,
+             random_state=9, reg_alpha=None, reg_lambda=None,
+             scale_pos_weight=None, subsample=None, tree_method=None,
+             validate_parameters=None, verbosity=None)",high_corrs,False,False
+193,13.292713467852096,0.19637840167823942,"XGBRegressor(base_score=None, booster=None, colsample_bylevel=None,
+             colsample_bynode=None, colsample_bytree=None, gamma=None,
+             gpu_id=None, importance_type='gain', interaction_constraints=None,
+             learning_rate=0.01, max_delta_step=None, max_depth=None,
+             min_child_weight=None, missing=nan, monotone_constraints=None,
+             n_estimators=1000, n_jobs=-1, num_parallel_tree=None,
+             random_state=9, reg_alpha=None, reg_lambda=None,
+             scale_pos_weight=None, subsample=None, tree_method=None,
+             validate_parameters=None, verbosity=None)",grades_only,False,False
+194,13.342029759692249,0.19166390641007702,"XGBRegressor(base_score=None, booster=None, colsample_bylevel=None,
+             colsample_bynode=None, colsample_bytree=None, gamma=None,
+             gpu_id=None, importance_type='gain', interaction_constraints=None,
+             learning_rate=0.01, max_delta_step=None, max_depth=None,
+             min_child_weight=None, missing=nan, monotone_constraints=None,
+             n_estimators=1000, n_jobs=-1, num_parallel_tree=None,
+             random_state=9, reg_alpha=None, reg_lambda=None,
+             scale_pos_weight=None, subsample=None, tree_method=None,
+             validate_parameters=None, verbosity=None)",grades_offense,False,False
+195,13.292713467852096,0.19637840167823942,"XGBRegressor(base_score=None, booster=None, colsample_bylevel=None,
+             colsample_bynode=None, colsample_bytree=None, gamma=None,
+             gpu_id=None, importance_type='gain', interaction_constraints=None,
+             learning_rate=0.01, max_delta_step=None, max_depth=None,
+             min_child_weight=None, missing=nan, monotone_constraints=None,
+             n_estimators=1000, n_jobs=-1, num_parallel_tree=None,
+             random_state=9, reg_alpha=None, reg_lambda=None,
+             scale_pos_weight=None, subsample=None, tree_method=None,
+             validate_parameters=None, verbosity=None)",tds,False,False
+196,13.125840283680864,0.2158779503264677,"XGBRegressor(base_score=None, booster=None, colsample_bylevel=None,
+             colsample_bynode=None, colsample_bytree=None, gamma=None,
+             gpu_id=None, importance_type='gain', interaction_constraints=None,
+             learning_rate=0.01, max_delta_step=None, max_depth=None,
+             min_child_weight=None, missing=nan, monotone_constraints=None,
+             n_estimators=1000, n_jobs=-1, num_parallel_tree=None,
+             random_state=9, reg_alpha=None, reg_lambda=None,
+             scale_pos_weight=None, subsample=None, tree_method=None,
+             validate_parameters=None, verbosity=None)",intuition,False,False
+197,12.184834792349013,0.32390933596933014,"VotingRegressor(estimators=[('lr', LinearRegression()),
+                            ('knn', KNeighborsRegressor(n_neighbors=46)),
+                            ('dt',
+                             DecisionTreeRegressor(max_depth=2,
+                                                   random_state=9))])",high_corrs,False,False
+198,12.302314242398486,0.31128986264586855,"VotingRegressor(estimators=[('rf',
+                             RandomForestRegressor(min_samples_split=112,
+                                                   random_state=9)),
+                            ('xgb',
+                             XGBRegressor(base_score=None, booster=None,
+                                          colsample_bylevel=None,
+                                          colsample_bynode=None,
+                                          colsample_bytree=None, gamma=None,
+                                          gpu_id=None, importance_type='gain',
+                                          interaction_constraints=None,
+                                          learning_rate=0.01,
+                                          max_delta_step=None, max_depth=None,
+                                          min_child_weight=None, missing=nan,
+                                          monotone_constraints=None,
+                                          n_estimators=1000, n_jobs=None,
+                                          num_parallel_tree=None,
+                                          random_state=9, reg_alpha=None,
+                                          reg_lambda=None,
+                                          scale_pos_weight=None, subsample=None,
+                                          tree_method=None,
+                                          validate_parameters=None,
+                                          verbosity=None))])",all_feats,False,False
+199,12.205566258411547,0.3210738409058386,"StackingRegressor(estimators=[('lr', LinearRegression()),
+                              ('knn', KNeighborsRegressor(n_neighbors=46)),
+                              ('dt',
+                               DecisionTreeRegressor(max_depth=2,
+                                                     random_state=9))])",high_corrs,False,False
+200,12.174846980710388,0.3249254787987794,"StackingRegressor(estimators=[('rf',
+                               RandomForestRegressor(min_samples_split=112,
+                                                     random_state=9)),
+                              ('xgb',
+                               XGBRegressor(base_score=None, booster=None,
+                                            colsample_bylevel=None,
+                                            colsample_bynode=None,
+                                            colsample_bytree=None, gamma=None,
+                                            gpu_id=None, importance_type='gain',
+                                            interaction_constraints=None,
+                                            learning_rate=0.01,
+                                            max_delta_step=None, max_depth=None,
+                                            min_child_weight=None, missing=nan,
+                                            monotone_constraints=None,
+                                            n_estimators=1000, n_jobs=None,
+                                            num_parallel_tree=None,
+                                            random_state=9, reg_alpha=None,
+                                            reg_lambda=None,
+                                            scale_pos_weight=None,
+                                            subsample=None, tree_method=None,
+                                            validate_parameters=None,
+                                            verbosity=None))])",all_feats,False,False
