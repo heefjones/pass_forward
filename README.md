@@ -36,9 +36,9 @@ More in-depth analysis of feature correlation can be found in [this notebook](./
 ## Models
 Of the 1306 QB seasons, 288 had to be dropped, as they had no target variable (players in their final season and 2023 rookies). This left 1018 QB seasons. The 48 from the 2022 season were set aside as a final holdout set, leaving 970 rows in the training set. Models were iteratively trained using 5-fold cross validation. 
 
-I tested 7 total machine learning algorithms. I used the statistics of a QB in season __x__ to predict their offensive grade in season __x+1__. I used many models from the [scikit-learn](https://scikit-learn.org/stable/) library as well as [XGBoost](https://xgboost.readthedocs.io/en/stable/). These models can be found in [this notebook](./models_1).
+I tested 7 total machine learning algorithms. I used the statistics of a QB in season __x__ to predict their offensive grade in season __x+1__. I used many models from the [scikit-learn](https://scikit-learn.org/stable/) library, as well as [XGBoost](https://xgboost.readthedocs.io/en/stable/). These models can be found in [this notebook](./models_1).
 
-The best performing algorithm ended up being a __RandomForestRegressor with min_samples_split=112__. It had an average __validation RMSE of 12.17__ and a __validation R-Squared of 0.33__.
+The best performing algorithm ended up being a __RandomForestRegressor with min_samples_split=112__. It had a __validation RMSE of 12.17__ and a __validation R-Squared of 0.33__.
 
 ## 2023 Predictions
 Since 10 out of 18 of the 2023 NFL weeks have already been played, we can actually see how well our final predictions have done thus far through the season. Here is a visualization of our final model's predictions:
