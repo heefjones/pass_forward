@@ -1,1 +1,0 @@
-train_rmse,train_r2,mean_val_rmse,mean_val_r2,num_layers,shape,optim,epochs,batch_size,feats
