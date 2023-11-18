@@ -1,4 +1,4 @@
-![](./images/slide_1.png)
+![](./images/slide_1.PNG)
 Welcome to __Pass Forward__, where we aim to anticipate quarterback performance!
 
 # Business Problem
@@ -25,7 +25,8 @@ I engineered 5 new features in total. I first created two normalized metrics: __
 
 ### Correlation
 Very few features had strong correlations with the target. To be exact, only 6 had a correlation of 0.5 or higher. Here are those correlations:
-![image](./images/top_6_corrs.png)
+![](./images/top_6_corrs.PNG)
+
 More in-depth analysis of feature correlation can be found in [this notebook](./feature_analysis.ipynb).
 
 # Models
@@ -33,24 +34,14 @@ Of the 1306 QB seasons, 288 had to be dropped, as they had no target variable (p
 
 I tested 7 total machine learning algorithms. I used the statistics of a QB in season __x__ to predict their offensive grade in season __x+1__. I used many models from the [scikit-learn](https://scikit-learn.org/stable/) library as well as [XGBoost](https://xgboost.readthedocs.io/en/stable/). These models can be found in [this notebook](./models_1).
 
-
-
-
-
-
-The best performing algorithm ended up being ____. 
-
+The best performing algorithm ended up being a __RandomForestRegressor with min_samples_split=112__. It had an average __validation RMSE of 12.17__ and a __validation R-Squared of 0.33__.
 
 # 2023 Predictions
-Since 10 out of 18 of the 2023 NFL weeks have already been played, we can actually see how well our final predictions have done thus far through the season. Here is a dataframe holding the predictions for all 48 QBs who have played so far this season:
-![](./images/preds_df.png)
-Using these first 10 weeks, our RMSE was __12.16__ and R-Squared was __0.40__.
-
-__71%__
-
-
-Here is a visualization of our final model's predictions:
+Since 10 out of 18 of the 2023 NFL weeks have already been played, we can actually see how well our final predictions have done thus far through the season. Here is a visualization of our final model's predictions:
 ![](./images/preds.png)
 Each point represents a single player in 2023. The distance from the black line is how far off our prediction was. Ideally, a perfect model would only have dots on the line. Dots above the line are cases in which our model overpredicted the player's performance, and dots below the line are under-predictions.
 
-# Conclusion
+Using these first 10 weeks of 2023, our RMSE was __12.16__ and R-Squared was __0.40__. You can see in the graph above, Aaron Rodgers was by far our worst prediction. with an error of 38.6. It should be noted that he was injured on the 4th play of the 2023 season with a torn achilles, so this point is clearly an outlier. If we drop this point, our RMSE goes from a 12.16 to a __10.92__, and R^2 leaps from a 0.4 to a __0.49__.
+
+# Next Steps
+Once the 2023 season is complete, I can re-evaluate the model's performance on the full season. Stay tuned for 2024 predictions!
