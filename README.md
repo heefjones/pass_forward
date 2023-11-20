@@ -45,7 +45,7 @@ Since 10 out of 18 of the 2023 NFL weeks have already been played, we can actual
 ![](./images/preds.png)
 Each point represents a single player in 2023. The distance from the black line is how far off our prediction was. Ideally, a perfect model would only have dots on the line. Dots above the line are cases in which our model overpredicted the player's performance, and dots below the line are under-predictions.
 
-Using these first 10 weeks of 2023, our RMSE was __12.16__ and R-Squared was __0.40__. You can see in the graph above, Aaron Rodgers was by far our worst prediction. with an error of 38.6. It should be noted that he was injured on the 4th play of the 2023 season with a torn achilles, so this point is clearly an outlier. If we drop this point, our RMSE goes from a 12.16 to a __10.92__, and R^2 leaps from a 0.4 to a __0.49__.
+Using these first 10 weeks of 2023, our RMSE was __12.16__ and R-Squared was __0.40__. You can see in the upper-left portion graph above that Aaron Rodgers was by far our worst prediction, with an error of 38.6. It should be noted that he was injured on the 4th play of the 2023 season with a torn achilles, so this data point is clearly an outlier. If we drop this point, our RMSE goes from a 12.16 to a __10.92__, and R^2 leaps from a 0.4 to a __0.49__.
 
 ## Next Steps
 Once the 2023 season is complete, I can re-evaluate the model's performance on the full season. Stay tuned for 2024 predictions!
