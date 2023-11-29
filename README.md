@@ -38,9 +38,9 @@ Of the 1306 QB seasons, 288 had to be dropped, as they had no target variable (p
 
 I tested 11 total machine learning algorithms. I used the statistics of a QB in season __x__ to predict their offensive grade in season __x+1__. I used many models from the [scikit-learn](https://scikit-learn.org/stable/) library, as well as [XGBoost](https://xgboost.readthedocs.io/en/stable/). These models can be found in [this notebook](./models_1). The best performing algorithm ended up being a __RandomForestRegressor with min_samples_split=112__. It had a __validation RMSE of 12.17__ and a __validation R-Squared of 0.33__.
 
-Next, I attempted to improve upon this performance by using a PyTorch dense neural network. The results were worse than the optimized Random Forest. This process can be found [here](.other_code/models_2.ipynb).
+Next, I attempted to improve upon this performance by using a PyTorch dense neural network. The results were worse than the optimized Random Forest. This process can be found [here](./other_code/models_2.ipynb).
 
-I also tried a PyTorch sequence model (RNN). This model used a sequence of QB seasons to predict the offensive grade of the final season in that sequence. Once again, these results were worse than the Random Forest. This was likely due to the already small dataset of under 1000 rows, only to be made even smaller by converting the data into sequences. This process can be found [here](.other_code/models_3.ipynb).
+I also tried a PyTorch sequence model (RNN). This model used a sequence of QB seasons to predict the offensive grade of the final season in that sequence. Once again, these results were worse than the Random Forest. This was likely due to the already small dataset of under 1000 rows, only to be made even smaller by converting the data into sequences. This process can be found [here](./other_code/models_3.ipynb).
 
 ## 2023 Predictions
 Since 10 out of 18 of the 2023 NFL weeks have already been played, we can actually see how well our final predictions have done thus far through the season. Here is a visualization of our final model's predictions:
