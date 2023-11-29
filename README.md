@@ -13,7 +13,7 @@ In this project, the metric used to measure QB performance was __Pro Football Fo
 With that, the goal of this project was to __predict 2023 QB offensive grade__ with maximum accuracy.
 
 ## Data
-The data used in this project was completely sourced from [pff.com](https://www.pff.com/). The dataset contained 1306 QB seasons of 288 unique NFL QBs, extracted from the 2006-2023 NFL seasons. Postseason data was exluded, as it introduces inconsistency in the volume for each player. This included backup QBs who only played a single game during the season, to QBs who played all 16 or 17 games during the year. The data contained 61 numerical passing and rushing statistics that were used to train the predictive models. 
+The data used in this project was completely sourced from [PFF's website](https://www.pff.com/). The dataset contained 1306 QB seasons of 288 unique NFL QBs, extracted from the 2006-2023 NFL seasons. Postseason data was exluded, as it introduces inconsistency in the volume for each player. This included backup QBs who only played a single game during the season, to QBs who played all 16 or 17 games during the year. The data contained 61 numerical passing and rushing statistics that were used to train the predictive models. 
 
 The data was formatted in such that a single row represented a single season from a specific QB. For example, Patrick Mahomes had 7 rows in the dataset, as he has played in 7 different seasons.
 
@@ -36,7 +36,7 @@ More in-depth analysis of feature correlation can be found in [this notebook](./
 ## Models
 Of the 1306 QB seasons, 288 had to be dropped, as they had no target variable (players in their final season and the 2023 season). This left 1018 QB seasons. The 48 from the 2022 season were set aside as a final holdout set, leaving 970 rows in the training set. Models were iteratively trained using 5-split KFold cross validation. 
 
-I tested 11 total machine learning algorithms. I used the statistics of a QB in season __x__ to predict their offensive grade in season __x+1__. I used many models from the [scikit-learn](https://scikit-learn.org/stable/) library, as well as [XGBoost](https://xgboost.readthedocs.io/en/stable/). These models can be found in [this notebook](./models_1). The best performing algorithm ended up being a __RandomForestRegressor with min_samples_split=112__. It had a __validation RMSE of 12.17__ and a __validation R-Squared of 0.33__.
+I tested 11 total machine learning algorithms. I used the statistics of a QB in season __x__ to predict their offensive grade in season __x+1__. I used many models from the [scikit-learn](https://scikit-learn.org/stable/) library, as well as [XGBoost](https://xgboost.readthedocs.io/en/stable/). These models can be found in [this notebook](./models_1.ipynb). The best performing algorithm ended up being a __RandomForestRegressor with min_samples_split=112__. It had a __validation RMSE of 12.17__ and a __validation R-Squared of 0.33__.
 
 Next, I attempted to improve upon this performance by using a PyTorch dense neural network. The results were worse than the optimized Random Forest. This process can be found [here](./other_code/models_2.ipynb).
 
