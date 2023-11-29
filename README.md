@@ -13,7 +13,7 @@ In this project, the metric used to measure QB performance was __Pro Football Fo
 With that, the goal of this project was to __predict 2023 QB offensive grade__ with maximum accuracy.
 
 ## Data
-The data used in this project was completely sourced from [pff.com](pff.com). The dataset contained 1306 QB seasons of 288 unique NFL QBs, extracted from the 2006-2023 NFL seasons. Postseason data was exluded, as it introduces inconsistency in the volume for each player. This included backup QBs who only played a single game during the season, to QBs who played all 16 or 17 games during the year. The data contained 61 numerical passing and rushing statistics that were used to train the predictive models. 
+The data used in this project was completely sourced from [pff.com](https://www.pff.com/). The dataset contained 1306 QB seasons of 288 unique NFL QBs, extracted from the 2006-2023 NFL seasons. Postseason data was exluded, as it introduces inconsistency in the volume for each player. This included backup QBs who only played a single game during the season, to QBs who played all 16 or 17 games during the year. The data contained 61 numerical passing and rushing statistics that were used to train the predictive models. 
 
 The data was formatted in such that a single row represented a single season from a specific QB. For example, Patrick Mahomes had 7 rows in the dataset, as he has played in 7 different seasons.
 
