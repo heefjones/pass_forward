@@ -154,7 +154,7 @@ def fill_experience(group):
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
-def plot_hist_with_annot(df, col, bins=None, vertical_lines=None, color='blue'):
+def plot_hist_with_annot(df, col, bins=None, xticklabels=None, vertical_lines=None, color='black'):
     """
     Plots a histogram of a column and optionally adds vertical lines with percentage annotations.
 
@@ -162,6 +162,7 @@ def plot_hist_with_annot(df, col, bins=None, vertical_lines=None, color='blue'):
     - df (pd.DataFrame): DataFrame containing the data.
     - col (str): Column name to plot.
     - bins (int, optional): Number of bins in the histogram. Default is the square root of the number of rows in the DataFrame.
+    - xticklabels (list[int], optional): Custom x-tick labels. Default is None.
     - vertical_lines (list[int], optional): List of x-values where vertical lines should be drawn. Defaults to None.
 
     Returns:
@@ -175,27 +176,40 @@ def plot_hist_with_annot(df, col, bins=None, vertical_lines=None, color='blue'):
     # get data
     data = df[col]
 
-    # plot histogram
-    ax = data.plot(kind='hist', bins=bins, figsize=(18, 9), title=f'{col} Distribution', color=color)
+    # compute histogram
+    counts, bin_edges = np.histogram(data, bins=np.arange(data.min(), data.max() + 2) - 0.5)
 
-    # add vertical lines
+    # compute bin centers (which are your actual data values)
+    bin_centers = 0.5 * (bin_edges[1:] + bin_edges[:-1])
+
+    # plot with bars centered
+    fig, ax = plt.subplots(figsize=(18, 9))
+    ax.bar(bin_centers, counts, width=1.0, align='center', color=color, edgecolor='black')
+
+    # center X ticks under the bars
+    ax.set_xticks(np.arange(data.min(), data.max() + 1))
+    ax.set_xticklabels(np.arange(data.min(), data.max() + 1))
+
+    # set x-tick labels
+    if xticklabels:
+        ax.set_xticks(xticklabels)
+        ax.set_xticklabels(xticklabels)
+
+    # add vertical lines and region annotations
     if vertical_lines:
-        # sort vertical lines to ensure correct region division
         vertical_lines = sorted(vertical_lines)
-        
-        # add vertical lines
         for x in vertical_lines:
-            plt.axvline(x=x, color='black', linestyle='dashed', linewidth=2)
-        
-        # compute percentages for each region
+            ax.axvline(x=x, color='red', linestyle='dashed', linewidth=2)
+
         total_count = len(data)
-        prev_x = 0
-        for x in vertical_lines + [data.max()]:  # include max value as final boundary
+        prev_x = data.min()
+        for x in vertical_lines + [data.max()]:
             region_pct = ((data >= prev_x) & (data < x)).sum() / total_count * 100
-            plt.text((prev_x + x) / 2, ax.get_ylim()[1] * 0.9, f'{region_pct:.1f}%', 
-                     color='black', fontsize=12, ha='center', va='center', 
-                     bbox=dict(facecolor='white', alpha=0.8))
+            ax.text((prev_x + x) / 2, max(counts) * 0.9, f'{region_pct:.1f}%',
+                    color='black', fontsize=12, ha='center', va='center',
+                    bbox=dict(facecolor='white', edgecolor='black', alpha=0.8))
             prev_x = x
+
     plt.show()
     
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
