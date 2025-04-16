@@ -1,7 +1,6 @@
-# Data directories to ignore
-nfl_data/
-pass_data/
-rush_data/
+# Directories to ignore
+data/
+garbage_code/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -47,14 +47,7 @@ Each point represents a single player in 2023. The distance from the black line 
 
 Using these first 10 weeks of 2023, our RMSE was __12.16__ and R-Squared was __0.40__. You can see in the upper-left portion graph above that Aaron Rodgers was by far our worst prediction, with an error of 38.6. It should be noted that he was injured on the 4th play of the 2023 season with a torn achilles, so this data point is clearly an outlier. If we drop this point, our RMSE goes from a 12.16 to a __10.92__, and R^2 leaps from a 0.4 to a __0.49__.
 
-## Next Steps
-Once the 2023 season is complete, I can re-evaluate the model's performance on the full season. Stay tuned for 2024 predictions!
-
-## More Information
-For additional info or any questions, you can contact me at heefjones9@gmail.com.
-
 ## Repository Structure
-
 ```
 ├── images
 ├── models
