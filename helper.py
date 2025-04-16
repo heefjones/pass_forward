@@ -33,7 +33,17 @@ sns.set(style='whitegrid', font='Average')
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
 # global vars
-ROOT = './data/'
+EXP_2006 = {'Brett Favre': 15, 'Jon Kitna': 10, 'Marc Bulger': 6, 'Peyton Manning': 8,  'Drew Brees': 5, 'Eli Manning': 2, 'Carson Palmer': 3, 
+                'Tom Brady': 6, 'Chad Pennington': 6, 'Rex Grossman': 3, 'Ben Roethlisberger': 2, 'Steve McNair': 11, 'Philip Rivers': 2, 'David Carr': 4, 
+                'Alex Smith': 1, 'Brad Johnson': 14, 'Jake Delhomme': 9, 'J.P. Losman': 2, 'Charlie Frye': 1, 'Joey Harrington': 4, 'Michael Vick': 5, 
+                'Matt Leinart': 0, 'Matt Hasselbeck': 8, 'Vince Young': 0, 'Tony Romo': 3, 'Bruce Gradkowski': 0, 'Jake Plummer': 9, 'Donovan McNabb': 7,
+                'Andrew Walter': 1, 'Mark Brunell': 13, 'Damon Huard': 10, 'David Garrard': 4, 'Jason Campbell': 1, 'Trent Green': 13, 'Aaron Brooks': 7,
+                'Jeff Garcia': 7, 'Byron Leftwich': 3, 'Kurt Warner': 12, 'Drew Bledsoe': 13, 'Seneca Wallace': 3, 'Jay Cutler': 0, 'Daunte Culpepper': 7, 
+                'Derek Anderson': 1, 'Chris Simms': 3, 'Tim Rattay': 6, 'Chris Weinke': 5, 'Kerry Collins': 11, 'Tarvaris Jackson': 0, 'Cleo Lemon': 4, 
+                'Kyle Boller': 3, 'Charlie Batch': 8, 'Sage Rosenfels': 5, 'A.J. Feeley': 5, 'Brian Griese': 8, 'Matt Schaub': 2, 'Jamie Martin': 13, 
+                'Quinn Gray': 4, 'Brooks Bollinger': 3, 'Aaron Rodgers': 1, 'Marques Tuiasosopo': 5, 'Brett Basanez': 0, 'Matt Cassel': 1, 'Brodie Croyle': 0, 
+                'Vinny Testaverde': 19, 'Gus Frerotte': 12, 'Anthony Wright': 7, 'Billy Volek': 6, 'Ken Dorsey': 3, 'Patrick Ramsey': 4, 'Kellen Clemens': 0}
+COLORS = ['#00c9ff', '#005bff', '#006d8b', '#1f497d', '#000000']
 
 # set numpy seed
 SEED = 9
@@ -43,7 +53,7 @@ np.random.seed(SEED)
 
 def load_pass_data():
     # get all csv files in the 'pass_data' directory
-    pass_paths = [os.path.join('./data/pass_data', file) for file in os.listdir('./data/pass_data') if file.endswith('.csv')]
+    pass_paths = [os.path.join('./data/passing', file) for file in os.listdir('./data/passing') if file.endswith('.csv')]
 
     # list to hold all dfs
     pass_dfs = []
@@ -59,8 +69,8 @@ def load_pass_data():
         # add 'pass' to cols to indicate passing stat
         pass_data.columns = ['player', 'team_name', 'player_game_count'] + ['pass_' + col for col in pass_data.columns[3:]]
         
-        # get year as string from filename
-        year = file_path[-8:-4]
+        # get year from filename
+        year = int(file_path[-8:-4])
 
         # add year column
         pass_data['year'] = year
@@ -75,7 +85,7 @@ def load_pass_data():
 
 def load_rush_data():
     # get all csv files in the 'rush_data' directory
-    rush_paths = [os.path.join('./data/rush_data', file) for file in os.listdir('./data/rush_data') if file.endswith('.csv')]
+    rush_paths = [os.path.join('./data/rushing', file) for file in os.listdir('./data/rushing') if file.endswith('.csv')]
 
     # list to hold all dfs
     rush_dfs = []
@@ -94,7 +104,7 @@ def load_rush_data():
         rush_data.columns = ['player'] + ['rush_' + col for col in rush_data.columns[1:]]
 
         # get year as string from filename
-        year = file_path[-8:-4]
+        year = int(file_path[-8:-4])
         
         # add year column
         rush_data['year'] = year
@@ -129,25 +139,83 @@ def show_shape_and_nulls(df):
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
-def show_unique_vals(df):
+def fill_experience(group):
+    # get first experience value for a player
+    first_exp = group['exp'].iloc[0]
+    
+    # if value is null, set to 0 (rookie season)
+    if pd.isna(first_exp):
+        first_exp = 0
+    
+    # define range of years to fill each player's experience column
+    experience = range(int(first_exp), int(first_exp) + len(group))
+    group['exp'] = list(experience)
+    return group
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+
+def plot_hist_with_annot(df, col, bins=None, vertical_lines=None, color='blue'):
     """
-    Print the number of unique values for each column in a DataFrame.
-    If a column has fewer than 20 unique values, print those values.
+    Plots a histogram of a column and optionally adds vertical lines with percentage annotations.
 
     Args:
-    - df (pd.DataFrame): The DataFrame to analyze.
+    - df (pd.DataFrame): DataFrame containing the data.
+    - col (str): Column name to plot.
+    - bins (int, optional): Number of bins in the histogram. Default is the square root of the number of rows in the DataFrame.
+    - vertical_lines (list[int], optional): List of x-values where vertical lines should be drawn. Defaults to None.
 
     Returns:
     - None
     """
 
-    # iterate over columns
-    for col in df.columns:
-        # get number of unique values and print
-        n = df[col].nunique()
-        print(f'"{col}" has {n} unique values')
+    # default bins (square root of number of rows)
+    if bins is None:
+        bins = int(np.sqrt(df.shape[0]))
 
-        # if number of unique values is under 20, print the unique values
-        if n < 20:
-            print(df[col].unique())
-        print()
+    # get data
+    data = df[col]
+
+    # plot histogram
+    ax = data.plot(kind='hist', bins=bins, figsize=(18, 9), title=f'{col} Distribution', color=color)
+
+    # add vertical lines
+    if vertical_lines:
+        # sort vertical lines to ensure correct region division
+        vertical_lines = sorted(vertical_lines)
+        
+        # add vertical lines
+        for x in vertical_lines:
+            plt.axvline(x=x, color='black', linestyle='dashed', linewidth=2)
+        
+        # compute percentages for each region
+        total_count = len(data)
+        prev_x = 0
+        for x in vertical_lines + [data.max()]:  # include max value as final boundary
+            region_pct = ((data >= prev_x) & (data < x)).sum() / total_count * 100
+            plt.text((prev_x + x) / 2, ax.get_ylim()[1] * 0.9, f'{region_pct:.1f}%', 
+                     color='black', fontsize=12, ha='center', va='center', 
+                     bbox=dict(facecolor='white', alpha=0.8))
+            prev_x = x
+    plt.show()
+    
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
