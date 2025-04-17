@@ -16,11 +16,11 @@ from sklearn.compose import make_column_selector, make_column_transformer
 from sklearn.preprocessing import OneHotEncoder, PolynomialFeatures, StandardScaler, MinMaxScaler, RobustScaler
 from sklearn.base import clone
 from sklearn.pipeline import Pipeline
-from sklearn.model_selection import train_test_split, KFold, cross_val_score
-from sklearn.linear_model import LogisticRegression
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import log_loss, accuracy_score
-from xgboost import XGBClassifier
+from sklearn.model_selection import train_test_split, KFold, cross_val_score, cross_validate
+from sklearn.linear_model import LinearRegression
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import r2_score, mean_squared_error
+from xgboost import XGBRegressor
 from bayes_opt import BayesianOptimization
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
@@ -44,6 +44,38 @@ EXP_2006 = {'Brett Favre': 15, 'Jon Kitna': 10, 'Marc Bulger': 6, 'Peyton Mannin
                 'Quinn Gray': 4, 'Brooks Bollinger': 3, 'Aaron Rodgers': 1, 'Marques Tuiasosopo': 5, 'Brett Basanez': 0, 'Matt Cassel': 1, 'Brodie Croyle': 0, 
                 'Vinny Testaverde': 19, 'Gus Frerotte': 12, 'Anthony Wright': 7, 'Billy Volek': 6, 'Ken Dorsey': 3, 'Patrick Ramsey': 4, 'Kellen Clemens': 0}
 COLORS = ['#00c9ff', '#005bff', '#006d8b', '#1f497d', '#000000']
+TEAM_COLORS = {
+    'GB': '#203731',   # Green Bay Packers
+    'NO': '#D3BC8D',   # New Orleans Saints
+    'LA': '#003594',   # Los Angeles Rams
+    'DAL': '#041E42',  # Dallas Cowboys
+    'NYG': '#0B2265',  # New York Giants
+    'LV': '#000000',   # Las Vegas Raiders
+    'SEA': '#002244',  # Seattle Seahawks
+    'PHI': '#004C54',  # Philadelphia Eagles
+    'DET': '#0076B6',  # Detroit Lions
+    'SF': '#AA0000',   # San Francisco 49ers
+    'CIN': '#FB4F14',  # Cincinnati Bengals
+    'BUF': '#00338D',  # Buffalo Bills
+    'CHI': '#0B162A',  # Chicago Bears
+    'LAC': '#0080C6',  # Los Angeles Chargers
+    'PIT': '#FFB612',  # Pittsburgh Steelers
+    'MIN': '#4F2683',  # Minnesota Vikings
+    'ARZ': '#97233F',  # Arizona Cardinals
+    'BLT': '#241773',  # Baltimore Ravens
+    'NE': '#002244',   # New England Patriots
+    'KC': '#E31837',   # Kansas City Chiefs
+    'DEN': '#FB4F14',  # Denver Broncos
+    'TEN': '#0C2340',  # Tennessee Titans
+    'WAS': '#773141',  # Washington Commanders
+    'JAX': '#006778',  # Jacksonville Jaguars
+    'MIA': '#008E97',  # Miami Dolphins
+    'NYJ': '#125740',  # New York Jets
+    'TB': '#D50A0A',   # Tampa Bay Buccaneers
+    'CLV': '#311D00',  # Cleveland Browns
+    'ATL': '#A71930',  # Atlanta Falcons
+    'CAR': '#0085CA',  # Carolina Panthers
+}
 
 # set numpy seed
 SEED = 9
@@ -214,7 +246,36 @@ def plot_hist_with_annot(df, col, bins=None, xticklabels=None, vertical_lines=No
     
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
+def plot_pairplot(df):
+    """
+    Plot pairplot of offensive grades.
 
+    Args:
+        df (pd.DataFrame): DataFrame containing offensive grades.
+    """
+
+    # rename columns for the plot
+    df_rename = df.rename(columns={'pass_grades_offense': 'Offense', 'pass_grades_pass': 'Passing', 'rush_grades_run': 'Rushing'})
+
+    # create pairplot
+    g = sns.PairGrid(df_rename[['Offense', 'Passing', 'Rushing']])
+
+    # map residual plot to upper triangle
+    g.map_upper(sns.residplot, color=COLORS[2]) 
+
+    # map regression plot to the lower triangle
+    g.map_lower(sns.scatterplot, color=COLORS[3])
+
+    # map histogram to the diagonal
+    g.map_diag(sns.histplot, color=COLORS[4])
+
+    # remove tick labels
+    for ax in g.axes.flat:
+        ax.set_xticklabels([])
+        ax.set_yticklabels([]);
+
+    # set title
+    g.fig.suptitle('Pairplot of Offensive Grades', fontsize=16, fontweight='bold')
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
