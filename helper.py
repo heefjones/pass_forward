@@ -12,15 +12,9 @@ import warnings
 
 # machine learning
 from tqdm import tqdm
-from sklearn.compose import make_column_selector, make_column_transformer
-from sklearn.preprocessing import OneHotEncoder, PolynomialFeatures, StandardScaler, MinMaxScaler, RobustScaler
-from sklearn.base import clone
-from sklearn.pipeline import Pipeline
-from sklearn.model_selection import train_test_split, KFold, cross_val_score, cross_validate
-from sklearn.linear_model import LinearRegression
-from sklearn.ensemble import RandomForestRegressor
+from sklearn.model_selection import KFold, cross_val_score, cross_validate
 from sklearn.metrics import r2_score, mean_squared_error
-from xgboost import XGBRegressor
+from xgboost import XGBRegressor, DMatrix
 from bayes_opt import BayesianOptimization
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
@@ -33,16 +27,6 @@ sns.set(style='whitegrid', font='Average')
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
 # global vars
-EXP_2006 = {'Brett Favre': 15, 'Jon Kitna': 10, 'Marc Bulger': 6, 'Peyton Manning': 8,  'Drew Brees': 5, 'Eli Manning': 2, 'Carson Palmer': 3, 
-                'Tom Brady': 6, 'Chad Pennington': 6, 'Rex Grossman': 3, 'Ben Roethlisberger': 2, 'Steve McNair': 11, 'Philip Rivers': 2, 'David Carr': 4, 
-                'Alex Smith': 1, 'Brad Johnson': 14, 'Jake Delhomme': 9, 'J.P. Losman': 2, 'Charlie Frye': 1, 'Joey Harrington': 4, 'Michael Vick': 5, 
-                'Matt Leinart': 0, 'Matt Hasselbeck': 8, 'Vince Young': 0, 'Tony Romo': 3, 'Bruce Gradkowski': 0, 'Jake Plummer': 9, 'Donovan McNabb': 7,
-                'Andrew Walter': 1, 'Mark Brunell': 13, 'Damon Huard': 10, 'David Garrard': 4, 'Jason Campbell': 1, 'Trent Green': 13, 'Aaron Brooks': 7,
-                'Jeff Garcia': 7, 'Byron Leftwich': 3, 'Kurt Warner': 12, 'Drew Bledsoe': 13, 'Seneca Wallace': 3, 'Jay Cutler': 0, 'Daunte Culpepper': 7, 
-                'Derek Anderson': 1, 'Chris Simms': 3, 'Tim Rattay': 6, 'Chris Weinke': 5, 'Kerry Collins': 11, 'Tarvaris Jackson': 0, 'Cleo Lemon': 4, 
-                'Kyle Boller': 3, 'Charlie Batch': 8, 'Sage Rosenfels': 5, 'A.J. Feeley': 5, 'Brian Griese': 8, 'Matt Schaub': 2, 'Jamie Martin': 13, 
-                'Quinn Gray': 4, 'Brooks Bollinger': 3, 'Aaron Rodgers': 1, 'Marques Tuiasosopo': 5, 'Brett Basanez': 0, 'Matt Cassel': 1, 'Brodie Croyle': 0, 
-                'Vinny Testaverde': 19, 'Gus Frerotte': 12, 'Anthony Wright': 7, 'Billy Volek': 6, 'Ken Dorsey': 3, 'Patrick Ramsey': 4, 'Kellen Clemens': 0}
 COLORS = ['#00c9ff', '#005bff', '#006d8b', '#1f497d', '#000000']
 TEAM_COLORS = {
     'GB': '#203731',   # Green Bay Packers
@@ -88,6 +72,13 @@ np.random.seed(SEED)
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
 def load_pass_data():
+    """
+    Load passing data from CSV files in the 'pass_data' directory.
+
+    Returns:
+    - (pd.DataFrame): A concatenated DataFrame containing passing statistics for quarterbacks.
+    """
+
     # get all csv files in the 'pass_data' directory
     pass_paths = [os.path.join('./data/passing', file) for file in os.listdir('./data/passing') if file.endswith('.csv')]
 
@@ -120,6 +111,13 @@ def load_pass_data():
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
 def load_rush_data():
+    """
+    Load rushing data from CSV files in the 'rushing_data' directory.
+
+    Returns:
+    - (pd.DataFrame): A concatenated DataFrame containing rushing statistics for quarterbacks.
+    """
+
     # get all csv files in the 'rush_data' directory
     rush_paths = [os.path.join('./data/rushing', file) for file in os.listdir('./data/rushing') if file.endswith('.csv')]
 
@@ -175,7 +173,50 @@ def show_shape_and_nulls(df):
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
+def init_exp_col(df):
+    """
+    Initialize the experience column for each player in the DataFrame.
+
+    Args:
+    - df (pd.DataFrame): The DataFrame containing player data.
+
+    Returns:
+    - df (pd.DataFrame): The DataFrame with the experience column initialized.
+    """
+
+    # experience of each player in 2006
+    exp_2006 = {'Brett Favre': 15, 'Jon Kitna': 10, 'Marc Bulger': 6, 'Peyton Manning': 8,  'Drew Brees': 5, 'Eli Manning': 2, 'Carson Palmer': 3, 
+                'Tom Brady': 6, 'Chad Pennington': 6, 'Rex Grossman': 3, 'Ben Roethlisberger': 2, 'Steve McNair': 11, 'Philip Rivers': 2, 'David Carr': 4, 
+                'Alex Smith': 1, 'Brad Johnson': 14, 'Jake Delhomme': 9, 'J.P. Losman': 2, 'Charlie Frye': 1, 'Joey Harrington': 4, 'Michael Vick': 5, 
+                'Matt Leinart': 0, 'Matt Hasselbeck': 8, 'Vince Young': 0, 'Tony Romo': 3, 'Bruce Gradkowski': 0, 'Jake Plummer': 9, 'Donovan McNabb': 7,
+                'Andrew Walter': 1, 'Mark Brunell': 13, 'Damon Huard': 10, 'David Garrard': 4, 'Jason Campbell': 1, 'Trent Green': 13, 'Aaron Brooks': 7,
+                'Jeff Garcia': 7, 'Byron Leftwich': 3, 'Kurt Warner': 12, 'Drew Bledsoe': 13, 'Seneca Wallace': 3, 'Jay Cutler': 0, 'Daunte Culpepper': 7, 
+                'Derek Anderson': 1, 'Chris Simms': 3, 'Tim Rattay': 6, 'Chris Weinke': 5, 'Kerry Collins': 11, 'Tarvaris Jackson': 0, 'Cleo Lemon': 4, 
+                'Kyle Boller': 3, 'Charlie Batch': 8, 'Sage Rosenfels': 5, 'A.J. Feeley': 5, 'Brian Griese': 8, 'Matt Schaub': 2, 'Jamie Martin': 13, 
+                'Quinn Gray': 4, 'Brooks Bollinger': 3, 'Aaron Rodgers': 1, 'Marques Tuiasosopo': 5, 'Brett Basanez': 0, 'Matt Cassel': 1, 'Brodie Croyle': 0, 
+                'Vinny Testaverde': 19, 'Gus Frerotte': 12, 'Anthony Wright': 7, 'Billy Volek': 6, 'Ken Dorsey': 3, 'Patrick Ramsey': 4, 'Kellen Clemens': 0}
+    
+    # add experience col to df
+    df['exp'] = np.nan
+
+    # add experience for 2006 QBs
+    df.loc[df['year'] == 2006, 'exp'] = df.loc[df['year'] == 2006, 'player'].map(exp_2006)
+
+    return df
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+
 def fill_experience(group):
+    """
+    Fill the experience column for each player in the group.
+
+    Args:
+    - group (pd.Series): The DataFrame containing player data for a specific player.
+
+    Returns:
+    - group (pd.Series): The DataFrame with the experience column filled.
+    """
+
     # get first experience value for a player
     first_exp = group['exp'].iloc[0]
     
@@ -255,7 +296,7 @@ def plot_pairplot(df):
     Plot pairplot of offensive grades.
 
     Args:
-        df (pd.DataFrame): DataFrame containing offensive grades.
+    - df (pd.DataFrame): DataFrame containing offensive grades.
     """
 
     # rename columns for the plot
@@ -372,7 +413,38 @@ def compute_rolling_stats(df, agg_cols):
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
+def xgb_cv(max_depth, learning_rate, gamma, min_child_weight, subsample, colsample_bytree, X, y):
+    """
+    Objective for Bayesian optimization of XGBRegressor. Returns the mean negative RMSE from CV.
 
+    Args:
+    - Hyperparameters to tune: max_depth, learning_rate, gamma, min_child_weight, subsample, colsample_bytree
+    - X (pd.DataFrame): Features.
+    - y (pd.Series): Lanels.
+
+    Returns:
+    - scores.mean (float) : mean of neg_root_mean_squared_error (larger is better).
+    """
+
+    # define XGBoost parameters
+    params = {'n_estimators': 100,
+        'max_depth': int(max_depth),
+        'learning_rate': learning_rate,
+        'gamma': gamma,
+        'min_child_weight': int(min_child_weight),
+        'subsample': subsample,
+        'colsample_bytree': colsample_bytree,
+        'random_state': SEED}
+
+    # define model
+    xgb = XGBRegressor(**params)
+
+    # 5-fold cross-validation
+    kf = KFold(n_splits=5, shuffle=True, random_state=SEED)
+    scores = cross_val_score(xgb, X, y, cv=kf, scoring='neg_root_mean_squared_error')
+
+    # return mean cv score
+    return scores.mean()
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
