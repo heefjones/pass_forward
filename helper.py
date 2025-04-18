@@ -83,6 +83,10 @@ np.random.seed(SEED)
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
+# eda.ipynb
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+
 def load_pass_data():
     # get all csv files in the 'pass_data' directory
     pass_paths = [os.path.join('./data/passing', file) for file in os.listdir('./data/passing') if file.endswith('.csv')]
@@ -279,7 +283,92 @@ def plot_pairplot(df):
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
+def agg_year_groups(df):
+    """
+    Create rolling mean columns for year groups and career mean.
 
+    Args:
+    - df (pd.DataFrame): DataFrame containing player data with 'pass_grades_offense' column.
+
+    Returns:
+    - df_agg (pd.DataFrame): DataFrame with additional columns for rolling means and career mean.
+    """
+
+    # create year groups
+    year_groups = [1, 2, 3, 4, 5, 10]
+
+    # initialize df_agg as a copy of df with just player column
+    df_agg = df[['player', 'year', 'target', 'pass_grades_offense']].copy()
+
+    # iterate through year groups
+    for n in year_groups:
+        col_name = f'pass_grade_offense_{n}year_mean'
+        
+        # create an empty column
+        df_agg[col_name] = np.nan
+
+        # loop over each player
+        for player, group in df.groupby('player'):
+            # get rolling mean for this player
+            rolling_vals = (
+                group['pass_grades_offense']
+                .rolling(window=n, min_periods=n)
+                .mean()
+                .values)
+
+            # set values back into the right rows
+            df_agg.loc[group.index, col_name] = rolling_vals
+
+    # add career mean up to each season (cumulative mean, shifted to exclude current season)
+    df_agg['career_pass_grade_offense_mean'] = (df.groupby('player')['pass_grades_offense'].apply(lambda x: x.expanding().mean().shift()))
+
+    return df_agg
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+
+def compute_rolling_stats(df, agg_cols):
+    """
+    Compute rolling and career statistics for specified columns in the dataframe.
+
+    Args:
+    - df (pd.DataFrame): The input dataframe containing player statistics.
+    - agg_cols (list): List of column names to compute rolling and career statistics for.
+
+    Returns:
+    - pd.DataFrame: The dataframe with new columns for rolling and career statistics.
+    """
+
+    # ensure values are sorted properly
+    df = df.sort_values(by=['player', 'year']).reset_index(drop=True)
+
+    # create empty list to collect new cols
+    new_columns = []
+
+    # loop through each agg col
+    for col in agg_cols:
+        # 5-year rolling mean and std
+        rolling_mean = df.groupby('player')[col].rolling(window=5, min_periods=1).mean().astype('float16').reset_index(level=0, drop=True)
+        rolling_std = df.groupby('player')[col].rolling(window=5, min_periods=1).std().astype('float16').reset_index(level=0, drop=True)
+
+        # career mean and std
+        career_mean = df.groupby('player')[col].expanding().mean().astype('float16').reset_index(level=0, drop=True)
+        career_std = df.groupby('player')[col].expanding().std().astype('float16').reset_index(level=0, drop=True)
+
+        # add new cols to list
+        new_columns.extend([rolling_mean.rename(f'{col}_5y_mean'), rolling_std.rename(f'{col}_5y_std'), career_mean.rename(f'{col}_career_mean'), career_std.rename(f'{col}_career_std')])
+
+    # concat the original df with the new columns
+    df = pd.concat([df] + new_columns, axis=1)
+
+    # fill nulls (not including target col)
+    df.loc[:, df.columns != 'target'] = df.loc[:, df.columns != 'target'].fillna(0)
+
+    # sort cols
+    return df[sorted(df.columns)]
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+
+# preds.ipynb
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
