@@ -297,7 +297,7 @@ def agg_year_groups(df):
     # create year groups
     year_groups = [1, 2, 3, 4, 5, 10]
 
-    # initialize df_agg as a copy of df with just player column
+    # initialize df_agg
     df_agg = df[['player', 'year', 'target', 'pass_grades_offense']].copy()
 
     # iterate through year groups
