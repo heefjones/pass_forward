@@ -29,37 +29,14 @@ sns.set(style='whitegrid', font='Average')
 # global vars
 COLORS = ['#00c9ff', '#005bff', '#006d8b', '#1f497d', '#000000']
 TEAM_COLORS = {
-    'GB': '#203731',   # Green Bay Packers
-    'NO': '#D3BC8D',   # New Orleans Saints
-    'LA': '#003594',   # Los Angeles Rams
-    'DAL': '#041E42',  # Dallas Cowboys
-    'NYG': '#0B2265',  # New York Giants
-    'LV': '#000000',   # Las Vegas Raiders
-    'SEA': '#002244',  # Seattle Seahawks
-    'PHI': '#004C54',  # Philadelphia Eagles
-    'DET': '#0076B6',  # Detroit Lions
-    'SF': '#AA0000',   # San Francisco 49ers
-    'CIN': '#FB4F14',  # Cincinnati Bengals
-    'BUF': '#00338D',  # Buffalo Bills
-    'CHI': '#0B162A',  # Chicago Bears
-    'LAC': '#0080C6',  # Los Angeles Chargers
-    'PIT': '#FFB612',  # Pittsburgh Steelers
-    'MIN': '#4F2683',  # Minnesota Vikings
-    'ARZ': '#97233F',  # Arizona Cardinals
-    'BLT': '#241773',  # Baltimore Ravens
-    'NE': '#002244',   # New England Patriots
-    'KC': '#E31837',   # Kansas City Chiefs
-    'DEN': '#FB4F14',  # Denver Broncos
-    'TEN': '#0C2340',  # Tennessee Titans
-    'WAS': '#773141',  # Washington Commanders
-    'JAX': '#006778',  # Jacksonville Jaguars
-    'MIA': '#008E97',  # Miami Dolphins
-    'NYJ': '#125740',  # New York Jets
-    'TB': '#D50A0A',   # Tampa Bay Buccaneers
-    'CLV': '#311D00',  # Cleveland Browns
-    'ATL': '#A71930',  # Atlanta Falcons
-    'CAR': '#0085CA',  # Carolina Panthers
-}
+    'GB': '#203731', 'CHI': '#0B162A', 'DET': '#0076B6', 'MIN': '#4F2683', 
+    'NO': '#D3BC8D', 'ATL': '#A71930', 'CAR': '#0085CA', 'TB': '#D50A0A', 
+    'LA': '#003594', 'SEA': '#002244', 'ARZ': '#97233F', 'SF': '#AA0000', 
+    'DAL': '#041E42', 'NYG': '#0B2265', 'PHI': '#004C54', 'WAS': '#773141', 
+    'LV': '#000000', 'LAC': '#0080C6', 'KC': '#E31837', 'DEN': '#FB4F14', 
+    'BUF': '#00338D', 'NE': '#002244', 'MIA': '#008E97', 'NYJ': '#125740', 
+    'CIN': '#FB4F14', 'PIT': '#FFB612', 'BLT': '#241773', 'CLV': '#311D00',
+    'TEN': '#0C2340', 'JAX': '#006778', 'HST': '#002244', 'IND': '#003594'}
 
 # set numpy seed
 SEED = 9
@@ -448,10 +425,86 @@ def xgb_cv(max_depth, learning_rate, gamma, min_child_weight, subsample, colsamp
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
+def plot_2024_preds(preds_df):
+    """
+    Visualize the model's predictions against the true values.
 
+    Args:
+    - preds_df (pd.DataFrame): DataFrame containing the model's predictions and true values.
+
+    Returns:
+    - None
+    """
+
+    # visualize predictions
+    plt.figure(figsize=(14, 8))
+
+    # lists for annotating player names
+    over_drops = ['Tim Boyle', 'Tommy DeVito', 'Dorian Thompson-Robinson', 'Kirk Cousins']
+    under_drops = ['Nick Mullens', 'Mason Rudolph', 'Brock Purdy', 'Tyson Bagent', 
+                'Davis Mills', 'Tyrod Taylor', 'Jimmy Garoppolo', 'Daniel Jones', 'Russell Wilson', 'Kenny Pickett', 'Joe Flacco']
+
+    # title, labels
+    plt.title('2024 Predictions with XGBoost', fontsize=22)
+    plt.xlabel('True Offensive Grade', fontsize=22)
+    plt.ylabel('Predicted Offensive Grade', fontsize=22)
+
+    # team colors
+    color_palette = {color: color for color in preds_df['color'].unique()}
+
+    # plot players as points
+    sns.scatterplot(data=preds_df, x='y_true', y='y_pred', hue='color', palette=color_palette, legend=False)
+
+    # plot line to show perfect predictions
+    sns.lineplot(x=range(30,96), y=range(30,96), color='black')
+
+    # annotating each point with the player's name
+    for index, row in preds_df.iterrows():
+        # over preds (above line)
+        if (row['y_pred'] > row['y_true']) and (row['player'] not in over_drops):
+            plt.text(row['y_true']-0.5, row['y_pred']-0.3, row['player'], horizontalalignment='right', color='black', 
+                weight='semibold', fontsize=7)
+        # under preds (below line)
+        elif (row['y_pred'] < row['y_true']) and (row['player'] not in under_drops):
+            plt.text(row['y_true']+0.5, row['y_pred']-0.3, row['player'], horizontalalignment='left', color='black', 
+                weight='semibold', fontsize=7)
+            
+    # annotate "Over-predictions" and "Under-predictions"
+    plt.text(35, 85, 'Over-predictions', fontsize=20, weight='semibold', color='red')
+    plt.text(75, 45, 'Under-predictions', fontsize=20, weight='semibold', color='red')
+    plt.show()
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
+def plot_2025_preds(preds_df):
+    """
+    Visualize the model's 2025 predictions.
 
+    Args:
+    - preds_df (pd.DataFrame): DataFrame containing the model's predictions.
+
+    Returns:
+    - None
+    """
+
+    # reverse the df for proper display
+    preds_df = preds_df[::-1]
+
+    # plot
+    plt.figure(figsize=(14, 10))
+    plt.hlines(y=preds_df['player_with_rank'], xmin=0, xmax=preds_df['y_pred'], color=preds_df['color'], lw=5)
+    plt.plot(preds_df['y_pred'], preds_df['player_with_rank'], 'o', color='black')
+    plt.title('2025 Predictions with XGBoost (Non-Rookies)', fontsize=22)
+    plt.xlabel('Predicted Offensive Grade', fontsize=18)
+    plt.xticks(fontsize=14)
+    plt.yticks(fontsize=10)
+    plt.xlim(60, 85)
+    plt.margins(x=0, y=0.03)
+
+    # annotate
+    for i, row in preds_df.iterrows():
+        plt.text(row['y_pred'] + 0.3, row['player_with_rank'], f'{row["y_pred"]:.1f}', va='center', fontsize=12)
+    plt.tight_layout()
+    plt.show()
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
