@@ -1,3 +1,0 @@
-,train_rmse,train_r2,val_rmse,val_r2,feats,seq_len,model_type,num_epochs,patience,hidden_units,num_layers,dropout_rate,batch_size,test_size
-0,12.239887284407503,0.33577155253472013,12.308454284555799,0.13860303078729286,all_feats,2,rnn,83,10,4,2,0.25,1,0.1
-1,12.808199029508277,0.2726578269317388,12.99683270500325,0.039557548048372415,all_feats,2,rnn,81,10,4,2,0.5,1,0.1
