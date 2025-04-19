@@ -13,7 +13,7 @@ import warnings
 # machine learning
 from tqdm import tqdm
 from sklearn.model_selection import KFold, cross_val_score, cross_validate
-from sklearn.metrics import r2_score, mean_squared_error
+from sklearn.metrics import mean_squared_error, r2_score
 from xgboost import XGBRegressor, DMatrix
 from bayes_opt import BayesianOptimization
 
