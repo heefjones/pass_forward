@@ -11,11 +11,15 @@ import sys
 import warnings
 
 # machine learning
-from tqdm import tqdm
-from sklearn.model_selection import KFold, cross_val_score, cross_validate
+from sklearn.model_selection import KFold, cross_val_score, cross_validate, train_test_split
 from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.preprocessing import StandardScaler
 from xgboost import XGBRegressor
 from bayes_opt import BayesianOptimization
+import torch
+import torch.nn as nn
+from torch.nn.utils.rnn import pad_sequence, pack_padded_sequence
+from torch.utils.data import Dataset, DataLoader
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -274,6 +278,9 @@ def plot_pairplot(df):
 
     Args:
     - df (pd.DataFrame): DataFrame containing offensive grades.
+
+    Returns:
+    - None
     """
 
     # rename columns for the plot
@@ -386,7 +393,7 @@ def compute_rolling_stats(df, agg_cols):
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
-# preds.ipynb
+# xgboost.ipynb
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -509,3 +516,175 @@ def plot_2025_preds(preds_df):
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
+# rnn.ipynb
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+
+def create_sequences(df):
+    """
+    Create sequences of features and labels for each player.
+
+    Args:
+    - df (pd.DataFrame): contains player features and labels.
+
+    Returns:
+    - X_pad (torch.Tensor): shape (n_players, max_seasons, n_features).
+    - y (torch.Tensor): shape (n_players,).
+    - lengths (torch.Tensor): shape (n_players,).
+    - mask (torch.Tensor): shape (n_players, max_seasons).
+    - players (list): list of player names.
+    """
+
+    # non-feature columns
+    non_feat_cols = ['player', 'team_name', 'year', 'target']
+
+    # init lists
+    sequences, labels, players = [], [], []
+
+    # iterate through each player
+    for player, g in df.groupby('player'):
+        # sort
+        g = g.sort_values('year').reset_index(drop=True)
+
+        # cache the feature matrix once
+        feat_mat = g.drop(columns=non_feat_cols).values
+
+        # iterate through each season
+        for i in range(len(g)):
+            # seasons 0 through i
+            seq = torch.tensor(feat_mat[:i+1], dtype=torch.float32)
+            
+            # target for season i
+            lbl = torch.tensor(g['target'].iloc[i], dtype=torch.float32)
+
+            # append to lists
+            sequences.append(seq)
+            labels.append(lbl)
+            players.append(player)
+
+    # pad to longest sequence
+    X_pad = pad_sequence(sequences, batch_first=True)  
+
+    # build mask so model knows which timesteps are real
+    lengths = torch.tensor([seq.size(0) for seq in sequences])
+    max_len = X_pad.size(1)
+    mask = torch.arange(max_len)[None, :] < lengths[:, None]
+
+    # create labels
+    y = torch.stack(labels)
+
+    return X_pad, y, lengths, mask, players
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+
+class SeqDataset(Dataset):
+    """
+    Dataset class for sequences of features and labels.
+    """
+    
+    # initialize the dataset
+    def __init__(self, X, lengths, y):
+        self.X, self.lengths, self.y = X, lengths, y
+
+    # get the length of the dataset
+    def __len__(self): return len(self.y)
+
+    # get an item from the dataset
+    def __getitem__(self, i): return self.X[i], self.lengths[i], self.y[i]
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+
+class RNNRegressor(nn.Module):
+    """
+    A simple RNN regressor for predicting player performance based on sequences of features.
+    """
+    
+    # initialize the model
+    def __init__(self, in_dim, hidden_dim, dropout=0.5):
+        super().__init__()
+        self.rnn = nn.RNN(in_dim, hidden_dim, batch_first=True)
+        self.head = nn.Linear(hidden_dim, 1)
+
+    # forward pass
+    def forward(self, x, lengths):
+        packed = pack_padded_sequence(x, lengths, batch_first=True, enforce_sorted=False)
+        packed_out, hn = self.rnn(packed)
+        out = hn[-1]  # final hidden state for the last layer
+        return self.head(out).squeeze(1)
+    
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+
+def train_rnn(model, opt, criterion, train_dl, val_dl, train_ds, device):
+    """
+    Train the RNN model with early stopping.
+
+    Args:
+    - model (nn.Module): The RNN model to train.
+    - opt (torch.optim.Optimizer): The optimizer for training.
+    - criterion (nn.Module): The loss function.
+    - train_dl (DataLoader): DataLoader for the training set.
+    - val_dl (DataLoader): DataLoader for the validation set.
+    - train_ds (Dataset): The training dataset.
+    - device (torch.device): The device to train on (CPU or GPU).
+
+    Returns:
+    - None
+    """
+
+    # init vars for early stopping
+    best_rmse = float('inf')
+    patience = 100
+    wait = 0
+    best_model_state = None
+
+    # training loop
+    for epoch in range(1000):
+        # training
+        model.train()
+        train_loss = 0
+        for Xb, lb, yb in train_dl:
+            Xb = Xb.to(device)
+            yb = yb.to(device)
+            opt.zero_grad()
+            preds = model(Xb, lb)
+            loss  = criterion(preds, yb)
+            loss.backward()
+            opt.step()
+            train_loss += loss.item()*Xb.size(0)
+        train_loss /= len(train_ds)
+
+        # validation
+        model.eval()
+        val_preds, val_trues = [], []
+        with torch.no_grad():
+            for Xb, lb, yb in val_dl:
+                Xb = Xb.to(device)
+                yb = yb.to(device)
+                vp = model(Xb, lb)
+                val_preds.append(vp.cpu())
+                val_trues.append(yb.cpu())
+        val_preds = torch.cat(val_preds).numpy()
+        val_trues = torch.cat(val_trues).numpy()
+
+        # evaluate
+        rmse = mean_squared_error(val_trues, val_preds, squared=False)
+        r2 = r2_score(val_trues, val_preds)
+
+        # print every 10 epochs
+        if epoch % 10 == 0:
+            print(f"Epoch {epoch} | Train MSE: {train_loss:.3f} | Val RMSE: {rmse:.3f}, R²: {r2:.3f}")
+
+        # early stopping logic
+        if rmse < best_rmse:
+            best_rmse = rmse
+            wait = 0
+            best_model_state = model.state_dict()  # save best model
+        else:
+            wait += 1
+            if wait >= patience:
+                print(f"\nEarly stopping at epoch {epoch}. Best Val RMSE: {best_rmse:.3f}")
+                break
+
+    # load best model back
+    if best_model_state is not None:
+        model.load_state_dict(best_model_state)
