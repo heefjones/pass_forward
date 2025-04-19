@@ -1,74 +1,51 @@
 ![](./images/slide_1.PNG)
 
-# Pass Forward
-Welcome to __Pass Forward__, where we aim to anticipate quarterback performance!
-
-# Project Goal
-- Create a predictive model that takes in a quarterback's past statistics to predict their __PFF offensive grade__ in the next season. PFF offensive grade is an aggregate measure of a quarterback's overall performance.
-
-## Business Problem
-In the game of football, he most important position on the field is the quarterback position. Accurately predicting QB performance can give NFL organizations insight on how to assess their own QB, as well as assessing other QBs around the league (say for potential trade opportunities). These predictions also have obvious applications in the realm of sports betting and fantasy football.
-
-So, how can we measure QB performance? Passing statistics, like yards, touchdowns, or completion percentage are often not indicative of a player's performance. Rating systems like NFL passer rating or ESPN's QBR also have their weaknesses, and can be heavily influenced by other players on the field (namely the offensive line or wide receiver corps).
-
-In this project, the metric used to measure QB performance was __Pro Football Focus' Offensive Grade__. PFF is an analytics organization that works with all 32 NFL teams to provide data-driven insights. Their database contains a trove of advanced statistics and measurements used to capture a player's complete performance. "Grade" was chosen as the target, as it rewards players for their true performance, regardless of the play's outcome. It is widely considered the best metric to assess player performance in the NFL. 
-
-With that, the goal of this project was to __predict 2023 QB offensive grade__ with maximum accuracy.
+# Goal
+How can we measure QB performance? Passing statistics like yards, touchdowns, or completion % are often not indicative of a player's performance. Rating systems like NFL passer rating or ESPN's QBR also have their weaknesses and can be heavily influenced by other players on the field. [Pro Football Focus](https://www.pff.com/)'s offensive grade is an aggregate measure of a quarterback's overall performance. The goal of this project is to create a predictive model that takes in a quarterback's past statistics to predict their __PFF offensive grade__ in the next season. 
 
 ## Data
-The data used in this project was completely sourced from [PFF's website](https://www.pff.com/). The dataset contained 1306 QB seasons of 288 unique NFL QBs, extracted from 18 NFL seasons (2006-2023). Postseason data was exluded, as it introduces inconsistency in the volume for each player. This included backup QBs who only played a single game during the season, to QBs who played all 16 or 17 games during the year. The data contained 61 numerical passing and rushing statistics that were used to train the predictive models. 
+The data used in this project was completely sourced from [PFF's website](https://www.pff.com/). 
+- 1398 QB seasons
+- 299 unique NFL QBs
+- 19 NFL seasons (2006-2024)
 
-The data was formatted in such that a single row represented a single season from a specific QB. For example, Patrick Mahomes had 7 rows in the dataset, as he has played in 7 different seasons.
+## Modeling
+### XGBoost
+- Used last season's stats as well as mean and std of all stats over 5 years, and mean/std stats over the entire career.
+- 5-split KFold cross validation.
+- validation RMSE of 12.22.
 
-Here is the distribution of the target variable:
-![](./images/target_dist.png)
-The average offensive grade in the dataset was 64, with a standard deviation of about 15.
+### RNN
+- Used the entire sequence of QB's past data.
+- 80/20 train/val split.
+- validation RMSE of 14.74.
 
-The full data intake & combination process can be found in [this notebook](./data_formatting.ipynb).
+Due to the noticeably weaker performance of the RNN, I only proceeded with the XGBoost.
 
-## Analysis
-### Engineered Features
-I engineered 5 new features in total. I first created two normalized metrics: __pass TDs per game__ and __pass yards per game__. I hoped that these metrics would capture how well a QB did on a game-by-game basis rather than the total statistics for these 2 categories. I also created an __experience__ feature to record the amount of seasons the QB had played in the league. Finally, I engineered two more metrics: __rolling mean__ and __rolling standard deviation__ of offensive grade. These two features were calculated by looking at a QB's current season offensive grade, and up to 2 previous seasons (taking 3 most recent seasons). I hoped that this would capture a QB's performance and consistency in his recent career. Rolling mean ended up having the second-highest correlation of all features, as shown below.
+## 2024 Predictions
+Next, the XGBoost was trained on the 2006-2022 data, and used the 2023 data to predict 2024 grades (as a holdout test set).
+![](./images/xgboost_2024_preds.PNG)
+Each point represents a single player in 2024. The distance from the black line is how far off our prediction was. A perfect model would only have dots on the line. The final RMSE on the 2024 holdout set was __11.49__ with an R^2 of __0.36__.
 
-### Correlation
-Very few features had strong correlations with the target. To be exact, only 6 had a correlation of 0.5 or higher. Here are those correlations:
-![](./images/top_6_corrs.PNG)
+## 2025 Predictions
+Finally, the model was trained on all data (2006-2023) and used the 2024 data to make 2025 predictions. Here are the final results:
+![](./images/xgboost_2025_preds.PNG)
 
-More in-depth analysis of feature correlation can be found in [this notebook](./feature_analysis.ipynb).
-
-## Models
-Of the 1306 QB seasons, 288 had to be dropped, as they had no target variable (players in their final season and the 2023 season). This left 1018 QB seasons. The 48 from the 2022 season were set aside as a final holdout set, leaving 970 rows in the training set. Models were iteratively trained using 5-split KFold cross validation. 
-
-I tested 11 total machine learning algorithms. I used the statistics of a QB in season __x__ to predict their offensive grade in season __x+1__. I used many models from the [scikit-learn](https://scikit-learn.org/stable/) library, as well as [XGBoost](https://xgboost.readthedocs.io/en/stable/). These models can be found in [this notebook](./models_1.ipynb). The best performing algorithm ended up being a __RandomForestRegressor with min_samples_split=112__. It had a __validation RMSE of 12.17__ and a __validation R-Squared of 0.33__.
-
-Next, I attempted to improve upon this performance by using a PyTorch dense neural network. The results were worse than the optimized Random Forest. This process can be found [here](./other_code/models_2.ipynb).
-
-I also tried a PyTorch sequence model (RNN). This model used a sequence of QB seasons to predict the offensive grade of the final season in that sequence. Once again, these results were worse than the Random Forest. This was likely due to the already small dataset of under 1000 rows, only to be made even smaller by converting the data into sequences. This process can be found [here](./other_code/models_3.ipynb).
-
-## 2023 Predictions
-Since 10 out of 18 of the 2023 NFL weeks have already been played, we can actually see how well our final predictions have done thus far through the season. Here is a visualization of our final model's predictions:
-![](./images/preds_1.png)
-Each point represents a single player in 2023. The distance from the black line is how far off our prediction was. Ideally, a perfect model would only have dots on the line. Dots above the line are cases in which our model overpredicted the player's performance, and dots below the line are underpredictions.
-
-Using all 48 QBs with playing time in 2023, our RMSE was __12.16__ and R-Squared was __0.40__.
-
-Looking at the visual above, you can see that Aaron Rodgers (upper-left) was by far our worst prediction with an error of 38.6. It should be noted that he was injured on the 4th play of the 2023 season with a torn achilles, so this data point is clearly an outlier. If we drop this point, our RMSE goes from a 12.16 to a __10.92__, and R^2 leaps from a 0.4 to a __0.49__. __66%__ of our model's predictions were within 10 points of the true offensive grade.
+## Files
+─ eda.ipynb - Data, combining, EDA, and feature engineering.
+─ xgboost.ipynb - Bayesian optimize XGBoost model and predict on both 2024 and 2025 seasons.
+─ rnn.ipynb - Train and validate a RNN.
+- helper.py - Custom functions for data processing, visualization, and model training.
+─ presentation.pdf - Slide deck to summarize findings.
 
 ## Repository Structure
 ```
-├── images
-├── models
-│   ├── models.csv
-├── other_code
-|   ├── models_2.ipynb
-|   ├── models_3.ipynb
-├── train_data
-│   ├── data.csv
-
-├── .gitignore
+├── eda.ipynb
+├── xgboost.ipynb
+├── rnn.ipynb
+├── helper.py
 ├── README.md
-├── data_formatting.ipynb
-├── feature_analysis.ipynb
-├── models_1.ipynb
-└── presentation.pdf
+├── presentation.pdf
+├── .gitignore
+└── /images
 ```
