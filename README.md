@@ -46,7 +46,7 @@ Finally, the model was trained on all data (2006-2023), using the 2024 data to p
 - xgboost.ipynb - Bayesian optimize XGBoost model and predict on both 2024 and 2025 seasons.
 - rnn.ipynb - Train and validate a RNN.
 - helper.py - Custom functions for data processing, visualization, and model training.
-- presentation.pdf - Slide deck to summarize findings.
+- presentation.pdf - Slide deck for the original 2023 presentation.
 
 # Repository Structure
 ```
