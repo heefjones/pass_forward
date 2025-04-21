@@ -10,7 +10,9 @@ How can we measure QB performance? Passing statistics like yards, touchdowns, or
   - 1,398 QB seasons
   - 299 unique QBs
 - **Features:**
-  - 61 passing & rushing metrics
+  - 34 passing metrics
+  - 26 rushing metrics
+  - Years of experience
 
 # Modeling
 ## 1. XGBoost
